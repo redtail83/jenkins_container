@@ -12,9 +12,9 @@ settings:
 
   # Set the name of the project. Defaults to basename of the project directory.
   # For built services, concatenated with service name to form the built image name.
-  project_name: tmp
+  project_name: jenkins_container
 
-  # The deployment_output_path is mounted to the Conductor container, and the 
+  # The deployment_output_path is mounted to the Conductor container, and the
   # `run` and `deployment` commands then write generated Ansible playbooks to it.
   # deployment_output_path: ./ansible-deployment
 
@@ -47,7 +47,7 @@ settings:
   #  description:
   #  display_name:
 
-services: {}
+services:
   # Add your containers here, specifying the base image you want to build from.
   # To use this example, uncomment it and delete the curly braces after services key.
   # You may need to run `docker pull ubuntu:trusty` for this to work.
@@ -60,8 +60,15 @@ services: {}
   #   dev_overrides:
   #     environment:
   #       - "DEBUG=1"
+  jenkins:
+    from: jenkinsci/blueocean
+    ports:
+      - 8080:8080
+    volumes:
+      - ${PWD}/jenkins-data:/var/jenkins_home
+
 registries: {}
   # Add optional registries used for deployment. For example:
   #  google:
   #    url: https://gcr.io
-  #    namespace: my-cool-project-xxxxxx   
+  #    namespace: my-cool-project-xxxxxx
